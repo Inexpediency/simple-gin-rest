@@ -34,6 +34,8 @@ func main() {
 	apiRoutes := server.Group("/api", middleware.AuthorizeJWT())
 	{
 		apiRoutes.POST("/video", videoController.Save)
+		apiRoutes.PATCH("/video", videoController.Update)
+		apiRoutes.DELETE("/video", videoController.Delete)
 		apiRoutes.GET("/videos", videoController.FindAll)
 	}
 
