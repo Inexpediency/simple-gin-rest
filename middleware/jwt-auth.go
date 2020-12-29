@@ -15,6 +15,9 @@ func AuthorizeJWT() gin.HandlerFunc {
 		tokenString := authHeader[len(BearerSchema):]
 
 		token, err := service.NewJWTService().ValidateToken(tokenString)
+		if err != nil {
+			_ = c.AbortWithError(http.StatusUnauthorized, err)
+		}
 
 		if token.Valid {
 			claims := token.Claims.(jwt.MapClaims)

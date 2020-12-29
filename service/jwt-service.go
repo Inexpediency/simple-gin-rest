@@ -1,13 +1,14 @@
 package service
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"os"
 	"time"
 )
 
 type JWTService interface {
-	GenerateToken(name string, admin bool) string
+	GenerateToken(name string, admin bool) (string, error)
 	ValidateToken(tokenString string) (*jwt.Token, error)
 }
 
@@ -44,9 +45,9 @@ func (s *jwtService) GenerateToken(username string, admin bool) (string, error) 
 		username,
 		admin,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour	* 25).Unix(),
-			Issuer: s.issuer,
-			IssuedAt: time.Now().Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 25).Unix(),
+			Issuer:    s.issuer,
+			IssuedAt:  time.Now().Unix(),
 		},
 	}
 
@@ -60,4 +61,16 @@ func (s *jwtService) GenerateToken(username string, admin bool) (string, error) 
 	}
 
 	return t, nil
+}
+
+func (s *jwtService) ValidateToken(tokenString string) (*jwt.Token, error) {
+	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Signing method validation
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+
+		// Return the secret signing key
+		return []byte(s.secretKey), nil
+	})
 }
