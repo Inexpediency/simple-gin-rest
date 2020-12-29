@@ -16,14 +16,21 @@ var (
 func main() {
 	server := gin.Default()
 
-	server.POST("/add-video", func(ctx *gin.Context) {
+	server.POST("/video", func(ctx *gin.Context) {
 		res, err := videoController.Save(ctx)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, struct {
-				error error
-			}{
-				error: err,
-			})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, res)
+	})
+
+	server.GET("/videos", func(ctx *gin.Context) {
+		res, err := videoController.FindAll()
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, res)

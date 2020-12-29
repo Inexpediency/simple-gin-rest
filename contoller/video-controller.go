@@ -4,6 +4,7 @@ import (
 	"Inexpediency/simple-gin-rest/entity"
 	"Inexpediency/simple-gin-rest/service"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 // VideoController implementation
@@ -27,6 +28,7 @@ func New(service service.VideoService) VideoController {
 func (controller controller) Save(ctx *gin.Context) (entity.Video, error) {
 	var video entity.Video
 	err := ctx.BindJSON(&video)
+	log.Println(video)
 	if err != nil {
 		return entity.Video{}, err
 	}

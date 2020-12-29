@@ -14,17 +14,17 @@ type videoService struct {
 
 // New return new video service
 func New() VideoService {
-	return &videoService
+	return &videoService{}
 }
 
 // Save saves video
-func (service *VideoService) Save(video entity.Video) entity.Video {
+func (service *videoService) Save(video entity.Video) entity.Video {
 	service.videos = append(service.videos, video)
 
-	return entity
+	return video
 }
 
 // FindAll finds all saved videos
-func (service *VideoService) FindAll() []entity.Video {
+func (service *videoService) FindAll() []entity.Video {
 	return service.videos
 }
