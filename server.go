@@ -26,7 +26,7 @@ func main() {
 	server.Use(
 		gin.Recovery(),
 		gin.Logger(),
-		middleware.BasicAuth(),
+		//middleware.BasicAuth(),
 	)
 
 	server.POST("/login", loginController.Login)
