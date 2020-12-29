@@ -1,9 +1,13 @@
 package entity
 
-import "time"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 // Video entity
 type Video struct {
+	gorm.Model
 	ID          uint64    `json:"id" gorm:"primary_key;auto_increment"`
 	Title       string    `json:"title" binding:"min=2,max=100" gorm:"type:varchar(100)"`
 	Description string    `json:"description" binding:"max=200" gorm:"type:varchar(200)"`
