@@ -4,7 +4,6 @@ import (
 	"Inexpediency/simple-gin-rest/entity"
 	"Inexpediency/simple-gin-rest/service"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -29,7 +28,6 @@ func NewVideoController() VideoController {
 func (controller videoController) Save(ctx *gin.Context) {
 	var video entity.Video
 	err := ctx.BindJSON(&video)
-	log.Println(video)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
 	}
@@ -41,4 +39,28 @@ func (controller videoController) Save(ctx *gin.Context) {
 // FindAll returns all added videos
 func (controller videoController) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, controller.service.FindAll())
+}
+
+// Update updates video in db
+func (controller videoController) Update(ctx *gin.Context) {
+	var video entity.Video
+	err := ctx.BindJSON(&video)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
+
+	controller.service.Update(video)
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+// Delete deletes video from db
+func (controller videoController) Delete(ctx *gin.Context) {
+	var video entity.Video
+	err := ctx.BindJSON(&video)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
+
+	controller.service.Delete(video)
+	ctx.JSON(http.StatusOK, gin.H{})
 }
