@@ -5,7 +5,6 @@ import (
 	"Inexpediency/simple-gin-rest/service"
 	"github.com/gin-gonic/gin"
 	"log"
-	"net/http"
 )
 
 var (
@@ -16,25 +15,8 @@ var (
 func main() {
 	server := gin.Default()
 
-	server.POST("/video", func(ctx *gin.Context) {
-		res, err := videoController.Save(ctx)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		ctx.JSON(http.StatusOK, res)
-	})
-
-	server.GET("/videos", func(ctx *gin.Context) {
-		res, err := videoController.FindAll()
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		ctx.JSON(http.StatusOK, res)
-	})
+	server.POST("/video", videoController.Save)
+	server.GET("/videos", videoController.FindAll)
 
 	err := server.Run(":8080")
 	if err != nil {

@@ -5,12 +5,13 @@ import (
 	"Inexpediency/simple-gin-rest/service"
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 )
 
 // VideoController implementation
 type VideoController interface {
-	FindAll() ([]entity.Video, error)
-	Save(ctx *gin.Context) (entity.Video, error)
+	FindAll(ctx *gin.Context)
+	Save(ctx *gin.Context)
 }
 
 type controller struct {
@@ -25,20 +26,19 @@ func New(service service.VideoService) VideoController {
 }
 
 // Save saves video
-func (controller controller) Save(ctx *gin.Context) (entity.Video, error) {
+func (controller controller) Save(ctx *gin.Context) {
 	var video entity.Video
 	err := ctx.BindJSON(&video)
 	log.Println(video)
 	if err != nil {
-		return entity.Video{}, err
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
 	}
 
 	controller.service.Save(video)
-
-	return video, nil
+	ctx.JSON(http.StatusOK, video)
 }
 
 // FindAll returns all added videos
-func (controller controller) FindAll() ([]entity.Video, error) {
-	return controller.service.FindAll(), nil
+func (controller controller) FindAll(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, controller.service.FindAll())
 }
