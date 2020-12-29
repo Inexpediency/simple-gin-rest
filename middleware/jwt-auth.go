@@ -17,6 +17,7 @@ func AuthorizeJWT() gin.HandlerFunc {
 		token, err := service.NewJWTService().ValidateToken(tokenString)
 		if err != nil {
 			_ = c.AbortWithError(http.StatusUnauthorized, err)
+			return
 		}
 
 		if token.Valid {

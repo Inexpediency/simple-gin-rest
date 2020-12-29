@@ -3,7 +3,6 @@ package main
 import (
 	controller "Inexpediency/simple-gin-rest/contoller"
 	"Inexpediency/simple-gin-rest/middleware"
-	"Inexpediency/simple-gin-rest/service"
 	"github.com/gin-gonic/gin"
 	"io"
 	"log"
@@ -11,8 +10,8 @@ import (
 )
 
 var (
-	videoService    service.VideoService       = service.New()
-	videoController controller.VideoController = controller.New(videoService)
+	videoController = controller.NewVideoController()
+	loginController = controller.NewLoginController()
 )
 
 func setupLogOutput() {
@@ -30,8 +29,13 @@ func main() {
 		middleware.BasicAuth(),
 	)
 
-	server.POST("/video", videoController.Save)
-	server.GET("/videos", videoController.FindAll)
+	server.POST("/login", loginController.Login)
+
+	apiRoutes := server.Group("/api", middleware.AuthorizeJWT())
+	{
+		apiRoutes.POST("/video", videoController.Save)
+		apiRoutes.GET("/videos", videoController.FindAll)
+	}
 
 	err := server.Run(":8080")
 	if err != nil {

@@ -14,19 +14,19 @@ type VideoController interface {
 	Save(ctx *gin.Context)
 }
 
-type controller struct {
+type videoController struct {
 	service service.VideoService
 }
 
-// New returns new video controller
-func New(service service.VideoService) VideoController {
-	return controller{
-		service: service,
+// NewVideoController returns new video videoController
+func NewVideoController() VideoController {
+	return videoController{
+		service: service.NewVideoService(),
 	}
 }
 
 // Save saves video
-func (controller controller) Save(ctx *gin.Context) {
+func (controller videoController) Save(ctx *gin.Context) {
 	var video entity.Video
 	err := ctx.BindJSON(&video)
 	log.Println(video)
@@ -39,6 +39,6 @@ func (controller controller) Save(ctx *gin.Context) {
 }
 
 // FindAll returns all added videos
-func (controller controller) FindAll(ctx *gin.Context) {
+func (controller videoController) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, controller.service.FindAll())
 }

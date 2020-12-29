@@ -2,6 +2,11 @@
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] POST   /video                    --> Inexpediency/simple-gin-rest/contoller.VideoController.Save-fm (4 handlers)
-[GIN-debug] GET    /videos                   --> Inexpediency/simple-gin-rest/contoller.VideoController.FindAll-fm (4 handlers)
+[GIN-debug] POST   /login                    --> Inexpediency/simple-gin-rest/contoller.LoginController.Login-fm (4 handlers)
+[GIN-debug] POST   /api/video                --> Inexpediency/simple-gin-rest/contoller.VideoController.Save-fm (5 handlers)
+[GIN-debug] GET    /api/videos               --> Inexpediency/simple-gin-rest/contoller.VideoController.FindAll-fm (5 handlers)
 [GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2020/12/29 - 16:46:47 | 401 |      42.181µs |             ::1 | GET      "/api/videos"
+Error #01: token contains an invalid number of segments
+[GIN] 2020/12/29 - 16:46:54 | 401 |      11.162µs |             ::1 | GET      "/api/videos"
+Error #01: token contains an invalid number of segments
