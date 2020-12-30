@@ -5,6 +5,7 @@ import (
 	"Inexpediency/simple-gin-rest/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 // VideoController implementation
@@ -29,12 +30,14 @@ func NewVideoController() VideoController {
 // Save saves video
 func (controller videoController) Save(ctx *gin.Context) {
 	var video entity.Video
-	err := ctx.BindJSON(&video)
+
+	err := ctx.ShouldBindJSON(&video)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
 	}
 
 	controller.service.Save(video)
+
 	ctx.JSON(http.StatusOK, video)
 }
 
@@ -46,23 +49,39 @@ func (controller videoController) FindAll(ctx *gin.Context) {
 // Update updates video in db
 func (controller videoController) Update(ctx *gin.Context) {
 	var video entity.Video
-	err := ctx.BindJSON(&video)
+
+	err := ctx.ShouldBindJSON(&video)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
 	}
 
+	id, err := strconv.ParseUint(ctx.Param("id"),10, 0)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
+	video.ID = id
+
 	controller.service.Update(video)
+
 	ctx.JSON(http.StatusOK, gin.H{})
 }
 
 // Delete deletes video from db
 func (controller videoController) Delete(ctx *gin.Context) {
 	var video entity.Video
-	err := ctx.BindJSON(&video)
+
+	err := ctx.ShouldBindJSON(&video)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
 	}
 
+	id, err := strconv.ParseUint(ctx.Param("id"),10, 0)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
+	video.ID = id
+
 	controller.service.Delete(video)
+
 	ctx.JSON(http.StatusOK, gin.H{})
 }
