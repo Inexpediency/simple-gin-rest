@@ -1,0 +1,84 @@
+info:
+  contact: {}
+paths:
+  /auth/token:
+    post:
+      description: Authenticates a user and provides a JWT to Authorize API calls
+      operationId: Authentication
+      parameters:
+      - description: Username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: Provides a JSON Web Token
+  /videos:
+    get:
+      consumes:
+      - application/json
+      description: Get all the existing videos
+      produces:
+      - application/json
+      security:
+      - bearerAuth: []
+      summary: List existing videos
+      tags:
+      - videos
+      - list
+    post:
+      consumes:
+      - application/json
+      description: Create a new video
+      produces:
+      - application/json
+      security:
+      - bearerAuth: []
+      summary: Create new videos
+      tags:
+      - videos
+      - create
+  /videos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a single video
+      parameters:
+      - description: Video ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      security:
+      - bearerAuth: []
+      - bearerAuth: []
+      summary: Remove videos
+      tags:
+      - videos
+    patch:
+      consumes:
+      - application/json
+      description: Update a single video
+      parameters:
+      - description: Video ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      security:
+      - bearerAuth: []
+      - bearerAuth: []
+      summary: Update videos
+      tags:
+      - videos
+swagger: "2.0"

@@ -23,6 +23,15 @@ func NewLoginController() LoginController {
 	}
 }
 
+// Authenticate godoc
+// @Summary Provides a JSON Web Token
+// @Description Authenticates a user and provides a JWT to Authorize API calls
+// @ID Authentication
+// @Consume application/x-www-form-urlencoded
+// @Produce json
+// @Param username formData string true "Username"
+// @Param password formData string true "Password"
+// @Router /auth/token [post]
 func (controller *loginController) Login(c *gin.Context) {
 	var credentials dto.AuthCredentials
 

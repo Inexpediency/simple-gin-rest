@@ -2,8 +2,11 @@ package main
 
 import (
 	controller "Inexpediency/simple-gin-rest/contoller"
+	"Inexpediency/simple-gin-rest/docs"
 	"Inexpediency/simple-gin-rest/middleware"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 	"io"
 	"log"
 	"os"
@@ -20,6 +23,14 @@ func setupLogOutput() {
 }
 
 func main() {
+	// Swagger 2.0 Meta Information
+	docs.SwaggerInfo.Title = "Ythosa - Video API"
+	docs.SwaggerInfo.Description = "Ythosa - Youtube Gin Video API."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Schemes = []string{"https"}
+
 	setupLogOutput()
 
 	server := gin.New()
@@ -38,6 +49,8 @@ func main() {
 		apiRoutes.DELETE("/video/:id", videoController.Delete)
 		apiRoutes.GET("/videos", videoController.FindAll)
 	}
+
+	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	err := server.Run(":8080")
 	if err != nil {

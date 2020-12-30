@@ -28,6 +28,14 @@ func NewVideoController() VideoController {
 }
 
 // Save saves video
+// CreateVideo godoc
+// @Security bearerAuth
+// @Summary Create new videos
+// @Description Create a new video
+// @Tags videos,create
+// @Accept  json
+// @Produce  json
+// @Router /videos [post]
 func (controller videoController) Save(ctx *gin.Context) {
 	var video entity.Video
 
@@ -42,11 +50,29 @@ func (controller videoController) Save(ctx *gin.Context) {
 }
 
 // FindAll returns all added videos
+// GetVideos godoc
+// @Security bearerAuth
+// @Summary List existing videos
+// @Description Get all the existing videos
+// @Tags videos,list
+// @Accept  json
+// @Produce  json
+// @Router /videos [get]
 func (controller videoController) FindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, controller.service.FindAll())
 }
 
 // Update updates video in db
+// UpdateVideo godoc
+// @Security bearerAuth
+// @Summary Update videos
+// @Description Update a single video
+// @Security bearerAuth
+// @Tags videos
+// @Accept  json
+// @Produce  json
+// @Param  id path int true "Video ID"
+// @Router /videos/{id} [PATCH]
 func (controller videoController) Update(ctx *gin.Context) {
 	var video entity.Video
 
@@ -67,6 +93,16 @@ func (controller videoController) Update(ctx *gin.Context) {
 }
 
 // Delete deletes video from db
+// DeleteVideo godoc
+// @Security bearerAuth
+// @Summary Remove videos
+// @Description Delete a single video
+// @Security bearerAuth
+// @Tags videos
+// @Accept  json
+// @Produce  json
+// @Param  id path int true "Video ID"
+// @Router /videos/{id} [delete]
 func (controller videoController) Delete(ctx *gin.Context) {
 	var video entity.Video
 
