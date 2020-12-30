@@ -19,3 +19,6 @@ vendor/
 
 # Logs
 *.log
+
+# DB file
+*.db

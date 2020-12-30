@@ -4,6 +4,7 @@ import (
 	"Inexpediency/simple-gin-rest/entity"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"log"
 )
 
 type VideoRepository interface {
@@ -42,7 +43,11 @@ func (db *database) Update(video entity.Video) {
 }
 
 func (db *database) Delete(video entity.Video) {
-	db.connection.Delete(&video)
+	log.Println("Deleting video with id = ", video.ID)
+
+	db.connection.Raw("delete from videos where id = ?", video.ID).Scan(&video)
+
+	log.Println("Deleted video: ", video)
 }
 
 func (db *database) FindAll() []entity.Video {

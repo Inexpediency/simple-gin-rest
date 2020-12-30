@@ -70,11 +70,6 @@ func (controller videoController) Update(ctx *gin.Context) {
 func (controller videoController) Delete(ctx *gin.Context) {
 	var video entity.Video
 
-	err := ctx.ShouldBindJSON(&video)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
-	}
-
 	id, err := strconv.ParseUint(ctx.Param("id"),10, 0)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
